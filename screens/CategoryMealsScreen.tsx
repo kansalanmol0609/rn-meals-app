@@ -1,49 +1,49 @@
 //libs
-import React, { memo, useLayoutEffect } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import React, {memo, useCallback, useMemo} from 'react';
+import {View, FlatList, StyleSheet} from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
+//components
+import MealItem from '../components/MealItem';
 
 //types
-import { CATEGORIES } from "../data/dummy-data";
-import { RootStackParamList } from "../navigation/types";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import {MEALS} from '../data/dummy-data';
+import {MealsStackParamList} from '../navigation/types';
+import type {Meal} from '../models/meal';
 
-type Props = NativeStackScreenProps<RootStackParamList, "CategoryMeals">;
+type Props = NativeStackScreenProps<MealsStackParamList, 'CategoryMeals'>;
 
-const CategoryMealsScreen = ({ navigation, route }: Props): JSX.Element => {
-	const { categoryId } = route.params;
+const CategoryMealsScreen = ({route}: Props): JSX.Element => {
+  const {categoryId} = route.params;
 
-	const selectedCategory = CATEGORIES.find(
-		(category) => category.id === categoryId
-	);
+  const displayedMeals = useMemo(
+    () => MEALS.filter((meal) => meal.categoryIds.indexOf(categoryId) >= 0),
+    [categoryId],
+  );
 
-	useLayoutEffect(() => {
-		navigation.setOptions({
-			title: `${selectedCategory?.title} Meals`,
-		});
-	}, []);
+  const renderMealItem = useCallback(
+    (itemData: {item: Meal}) => <MealItem item={itemData.item} />,
+    [],
+  );
 
-	return (
-		<View style={styles.screen}>
-			<Text>The Category Meals Screen</Text>
-			<Text>{selectedCategory?.title}</Text>
-			<Button
-				title='Go to Details'
-				onPress={() => {
-					// .push() can be used to push same screen.
-					navigation.navigate("MealDetail");
-				}}
-			/>
-			<Button title='Go Back' onPress={() => navigation.pop()} />
-		</View>
-	);
+  return (
+    <View style={styles.screen}>
+      <FlatList
+        data={displayedMeals}
+        keyExtractor={(item) => item.id}
+        renderItem={renderMealItem}
+        style={{width: '100%', padding: 10}}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-	screen: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-	},
+  screen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default memo(CategoryMealsScreen);

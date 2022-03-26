@@ -30,7 +30,8 @@
     "react/display-name": "off",
     "react/prop-types": "off",
     "prettier/prettier": "error",
-    "react-hooks/exhaustive-deps": "error"
+    "react-hooks/exhaustive-deps": "error",
+    "react/react-in-jsx-scope": "off"
   },
   "settings": {
     "react": {

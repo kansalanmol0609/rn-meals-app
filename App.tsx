@@ -1,37 +1,31 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import * as Font from "expo-font";
-import AppLoading from "expo-app-loading";
-import { useState } from "react";
-import MealsNavigator from "./navigation/MealsNavigator";
+//libs
+import React from 'react';
+import {View, Text} from 'react-native';
+import {useFonts} from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
-const fetchFonts = () =>
-	Font.loadAsync({
-		"open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
-		"open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
-	});
+//components
+import RootNavigator from './navigation/RootNavigator';
 
 export default function App() {
-	const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontLoaded, errors] = useFonts({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+  });
 
-	if (!fontLoaded) {
-		return (
-			<AppLoading
-				startAsync={fetchFonts}
-				onFinish={() => setFontLoaded(true)}
-				onError={() => null} //todo - later
-			/>
-		);
-	}
+  if (!fontLoaded) {
+    return <AppLoading />;
+  }
 
-	return <MealsNavigator />;
+  if (errors) {
+    return (
+      <View>
+        <Text>Error Occurred!</Text>
+      </View>
+    );
+  }
+
+  return <RootNavigator />;
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});
