@@ -32,9 +32,9 @@ const MealItem = ({item}: Props): JSX.Element => {
             </ImageBackground>
           </View>
           <View style={{...styles.mealRow, ...styles.mealDetails}}>
-            <Text>{item.duration}m</Text>
-            <Text>{item.complexity.toUpperCase()}</Text>
-            <Text>{item.affordability.toUpperCase()}</Text>
+            <Text style={styles.mealDetailsText}>{item.duration}m</Text>
+            <Text style={styles.mealDetailsText}>{item.complexity.toUpperCase()}</Text>
+            <Text style={styles.mealDetailsText}>{item.affordability.toUpperCase()}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -43,6 +43,9 @@ const MealItem = ({item}: Props): JSX.Element => {
 };
 
 const styles = StyleSheet.create({
+  mealDetailsText: {
+    fontFamily: 'open-sans',
+  },
   mealItem: {
     height: 200,
     width: '100%',

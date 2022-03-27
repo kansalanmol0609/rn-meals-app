@@ -1,6 +1,6 @@
 //libs
 import React, {memo, useLayoutEffect, useMemo} from 'react';
-import {View, Text, Button, StyleSheet} from 'react-native';
+import {View, Text, ScrollView, Image, StyleSheet} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 
 //components
@@ -12,6 +12,12 @@ import {MealsStackParamList} from '../navigation/types';
 import {MEALS} from '../data/dummy-data';
 
 type Props = NativeStackScreenProps<MealsStackParamList, 'MealDetail'>;
+
+const ListItem = (props: {children: string}) => (
+  <View style={styles.listItem}>
+    <Text style={styles.mealDetailsText}>{props.children}</Text>
+  </View>
+);
 
 const MealDetailScreen = ({route, navigation}: Props) => {
   const {mealId} = route.params;
@@ -35,24 +41,54 @@ const MealDetailScreen = ({route, navigation}: Props) => {
     });
   }, [navigation, selectedMeal?.title]);
 
+  if (!selectedMeal) {
+    return null;
+  }
+
   return (
-    <View style={styles.screen}>
-      <Text>{selectedMeal?.title}</Text>
-      <Button
-        title="Go Back to Categories"
-        onPress={() => {
-          navigation.popToTop();
-        }}
-      />
-    </View>
+    <ScrollView>
+      <Image source={{uri: selectedMeal.imageUrl}} style={styles.image} />
+      <View style={styles.details}>
+        <Text style={styles.mealDetailsText}>{selectedMeal.duration}m</Text>
+        <Text style={styles.mealDetailsText}>{selectedMeal.complexity.toUpperCase()}</Text>
+        <Text style={styles.mealDetailsText}>{selectedMeal.affordability.toUpperCase()}</Text>
+      </View>
+      <Text style={styles.title}>Ingredients</Text>
+      {selectedMeal.ingredients.map((ingredient) => (
+        <ListItem key={ingredient}>{ingredient}</ListItem>
+      ))}
+      <Text style={styles.title}>Steps</Text>
+      {selectedMeal.steps.map((step) => (
+        <ListItem key={step}>{step}</ListItem>
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  image: {
+    width: '100%',
+    height: 200,
+  },
+  details: {
+    flexDirection: 'row',
+    padding: 15,
+    justifyContent: 'space-around',
+  },
+  title: {
+    fontFamily: 'open-sans-bold',
+    fontSize: 22,
+    textAlign: 'center',
+  },
+  mealDetailsText: {
+    fontFamily: 'open-sans',
+  },
+  listItem: {
+    marginVertical: 10,
+    marginHorizontal: 20,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    padding: 10,
   },
 });
 

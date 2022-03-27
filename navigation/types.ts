@@ -5,7 +5,21 @@ export type MealsStackParamList = {
   MealDetail: {mealId: string};
 };
 
-export type RootNavigatorParamList = {
-  Meals: undefined;
+export type FavoritesStackParamList = {
   Favorites: undefined;
+  MealDetail: {mealId: string};
+};
+
+export type FiltersStackParamList = {
+  Filters: undefined;
+};
+
+export type TabsNavigatorParamList = {
+  Meals: undefined;
+  FavoritesNavigator: undefined;
+};
+
+export type MainNavigatorParamList = {
+  TabsNavigator: undefined;
+  FiltersNavigator: undefined;
 };

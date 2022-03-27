@@ -4,15 +4,16 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Platform} from 'react-native';
 
 //components
-import CategoriesScreen from '../screens/CategoriesScreen';
-import CategoryMealsScreen from '../screens/CategoryMealsScreen';
-import MealDetailScreen from '../screens/MealDetailScreen';
+import CategoriesScreen from '../../screens/CategoriesScreen';
+import CategoryMealsScreen from '../../screens/CategoryMealsScreen';
+import MealDetailScreen from '../../screens/MealDetailScreen';
 
 //constants
-import {COLORS} from '../constants/colors';
+import {COLORS} from '../../constants/colors';
 
 //types
-import {MealsStackParamList} from './types';
+import {MealsStackParamList} from '../types';
+import MenuButton from '../../components/MenuButton';
 
 const Stack = createNativeStackNavigator<MealsStackParamList>();
 
@@ -23,6 +24,10 @@ const MealsStack = (): JSX.Element => (
         backgroundColor: Platform.OS === 'ios' ? '' : COLORS.primaryColor,
       },
       headerTintColor: Platform.OS === 'ios' ? COLORS.primaryColor : 'white',
+      headerLeft: () => <MenuButton />,
+      headerTitleStyle: {
+        fontFamily: 'open-sans-bold',
+      },
     }}
     initialRouteName="CategoriesScreen"
   >

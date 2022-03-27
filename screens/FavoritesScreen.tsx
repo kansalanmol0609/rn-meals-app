@@ -1,22 +1,32 @@
-import React, { memo } from "react";
-import { View, Text, StyleSheet } from "react-native";
+//libs
+import {memo, useMemo} from 'react';
+import {View, StyleSheet} from 'react-native';
 
-type Props = {};
+//components
+import MealsList from '../components/MealsList';
 
-const FavoritesScreen = (props: Props) => {
-	return (
-		<View style={styles.screen}>
-			<Text>The Favorites Screen</Text>
-		</View>
-	);
+//constants
+import {MEALS} from '../data/dummy-data';
+
+const FavoritesScreen = () => {
+  const favoriteMeals = useMemo(
+    () => MEALS.filter((meal) => meal.id === 'm1' || meal.id === 'm2'),
+    [],
+  );
+
+  return (
+    <View style={styles.screen}>
+      <MealsList mealsList={favoriteMeals} />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-	screen: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-	},
+  screen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default memo(FavoritesScreen);
